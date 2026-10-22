@@ -1,0 +1,18 @@
+# Node
+node_modules/
+dist/
+.env
+
+# Terraform / OpenTofu
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+crash.log
+
+# Python
+__pycache__/
+*.pyc
+
+# LocalStack
+localstack-volume/
