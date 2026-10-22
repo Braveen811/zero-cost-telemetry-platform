@@ -143,6 +143,9 @@ If your LocalStack connection drops or OpenTofu fails to apply, always use `127.
 * **Cloud Storage Archive:** `s3://telemetry-archive`
 * **Visualization:** Dynamic Recharts BarChart of Top 10 Executed Binaries updating every 2000ms.
 
+## !Preview
+<img width="1210" height="705" alt="Shot-2026-10-22-152830" src="https://github.com/user-attachments/assets/722130d2-8bfc-4ad0-b867-37ab88fa4c61" />
+
 ---
 
 ## 📬 Contact
