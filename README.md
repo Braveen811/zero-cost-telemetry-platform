@@ -22,6 +22,8 @@ This architecture is entirely architected and built by **Braveen R** ([@Braveen8
 - **Frontend UI:** React + Vite + Tailwind CSS + Recharts
 - **OS Target:** Arch Linux
 
+
+```
 ---
 
 ## 🛠️ Step 1: Base Environment Setup
@@ -143,6 +145,13 @@ If your LocalStack connection drops or OpenTofu fails to apply, always use `127.
 
 ---
 
+## 📬 Contact
+
+**Braveen R**
+- **Let's connect:** [Portfolio & Social Links](https://braveenr.linklee.in/)
+
+---
+
 ## ✌️ Wrapping Up
 
 Building a custom cloud-native architecture from scratch is a journey. This repository is my personal take on making low-level Linux observability as seamless, visual, and cost-effective as possible.
@@ -151,8 +160,3 @@ Whether you are deploying this exactly as it is, or just stealing the eBPF C cod
 
 See you in the terminal!
 
-### 📬 Contact
-
-**Braveen R**
-
-* **Connect with me:** [Portfolio & Links Hub](https://braveenr.linklee.in/)
