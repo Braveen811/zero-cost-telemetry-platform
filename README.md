@@ -1,47 +1,74 @@
 ```markdown
-# Zero-Cost Cloud-Native Telemetry Platform
+# 🚀 The Zero-Cost Telemetry Platform
 
-An end-to-end infrastructure observability pipeline that captures real-time Linux kernel process executions, routes telemetry through a local time-series database, and visualizes the data via a custom React dashboard—all while emulating cloud infrastructure locally at zero cost.
+[![OS - Arch Linux](https://img.shields.io/badge/OS-Arch_Linux-1793D1?logo=arch-linux&logoColor=white&style=for-the-badge)](https://archlinux.org/)
+[![eBPF - BCC](https://img.shields.io/badge/Kernel-eBPF_BCC-black?logo=linux&logoColor=white&style=for-the-badge)](https://ebpf.io/)
+[![DevOps - OpenTofu](https://img.shields.io/badge/IaC-OpenTofu-FFD700?logo=terraform&logoColor=black&style=for-the-badge)](https://opentofu.org/)
+[![Cloud - LocalStack](https://img.shields.io/badge/Cloud-LocalStack-FFFFFF?logo=amazon-aws&logoColor=000000&style=for-the-badge)](https://localstack.cloud/)
+[![Frontend - React Vite](https://img.shields.io/badge/UI-React_Vite-61DAFB?logo=react&logoColor=black&style=for-the-badge)](https://react.dev/)
 
-## Overview
-This project bridges low-level Linux kernel programming with modern cloud and web technologies. It uses an **eBPF (Extended Berkeley Packet Filter)** probe to monitor system events, exports metrics to **Prometheus**, and visualizes them on a sleek **React (Vite + Tailwind CSS)** dashboard. To emulate a production cloud environment without incurring AWS charges, the project uses **LocalStack** orchestrated by **OpenTofu (Terraform)** to provision an S3 archive bucket.
+A blazingly fast, end-to-end infrastructure observability pipeline capturing real-time Arch Linux kernel events using eBPF, routed through a time-series database, and visualized on a custom React dashboard—all running locally for $0.
 
-## Motivation
-Cloud computing costs (FinOps) and full-stack observability are two of the most critical challenges in modern software engineering. I built this platform to solve the problem of testing complex DevOps architectures without spending a single dollar. It was inspired by the desire to demonstrate "T-shaped" development skills—proving I can write C code for the Linux kernel, provision cloud infrastructure as code, and design a polished frontend UI within a single cohesive monorepo.
+## 🏆 Credits
+This architecture is entirely architected and built by **Braveen R** ([@Braveen811](https://github.com/Braveen811)). It was built to solve the FinOps problem of testing complex cloud observability pipelines without spending a single dollar on AWS, proving full-stack "T-shaped" engineering from low-level C code to modern frontend UI.
 
-## Uses and Use Cases
-- **Kernel-Level Monitoring:** Security and system administrators can track exactly which binaries are executed on a Linux machine in real-time (e.g., detecting unauthorized scripts or processes).
-- **FinOps Cloud Testing:** Developers can safely test AWS S3 provisioning and API interactions locally using LocalStack before deploying to costly cloud environments.
-- **Observability Pipelines:** Serves as a foundational template for routing high-throughput system data into a Prometheus engine for analytics.
+---
 
-## Installation and Setup
+## 📸 Overview
+- **Kernel Probe:** eBPF (BCC) / C
+- **Database:** Prometheus (Time-series)
+- **Cloud Emulator:** LocalStack (AWS S3)
+- **Infrastructure as Code:** OpenTofu (Terraform)
+- **Frontend UI:** React + Vite + Tailwind CSS + Recharts
+- **OS Target:** Arch Linux
 
-### Prerequisites
-- **Arch Linux** (with `linux-headers` installed for eBPF compilation)
-- Docker & Docker Compose
-- OpenTofu (Terraform alternative)
-- Node.js & npm
-- Python 3 with `bcc` and `prometheus_client` packages
+---
 
-### Configuration Steps
+## 🛠️ Step 1: Base Environment Setup
+To run this pipeline, you need a Linux machine (preferably Arch) capable of compiling eBPF programs, alongside standard DevOps tooling. Ensure your system is fully updated:
 
-1. **Clone the Repository:**
-   ```bash
-   git clone [https://github.com/Braveen811/zero-cost-telemetry-platform.git](https://github.com/Braveen811/zero-cost-telemetry-platform.git)
-   cd zero-cost-telemetry-platform
+```bash
+sudo pacman -Syu
 
 ```
 
-2. **Configure LocalStack:**
-Update the `docker-compose.yml` file with your free LocalStack Auth Token. You can generate a free Hobby tier token at [app.localstack.cloud](https://app.localstack.cloud/).
-3. **Boot the Cloud & Database:**
+## 📦 Step 2: Install Required Dependencies
+
+Before booting the platform, you must install the underlying Linux headers, eBPF compilers, and container engines. Run the following command:
+
+```bash
+sudo pacman -S bcc linux-headers python-prometheus_client docker docker-compose npm opentofu
+
+```
+
+*(Note: Ensure your kernel headers perfectly match your active kernel version by checking `uname -r`)*.
+
+---
+
+## 🚀 Step 3: Installation & Deployment
+
+This repository is structured as a monorepo containing three distinct layers.
+
+**1. Clone this repository into your workspace:**
+
+```bash
+git clone [https://github.com/Braveen811/zero-cost-telemetry-platform.git](https://github.com/Braveen811/zero-cost-telemetry-platform.git)
+cd zero-cost-telemetry-platform
+
+```
+
+**2. Configure LocalStack Auth:**
+Edit `docker-compose.yml` and add your free Hobby tier LocalStack Auth Token to the environment variables. You can generate one instantly at [app.localstack.cloud](https://app.localstack.cloud/).
+
+**3. Boot the Cloud Infrastructure & Database:**
+
 ```bash
 docker compose up -d localstack prometheus
 
 ```
 
+**4. Deploy the AWS S3 Bucket via OpenTofu:**
 
-4. **Deploy Infrastructure:**
 ```bash
 cd devops-infra
 tofu init -upgrade
@@ -49,53 +76,83 @@ tofu apply -auto-approve
 
 ```
 
+**5. Start the eBPF Kernel Agent (Requires Root):**
+Open a **new terminal window**, navigate to the agent source, and run the Python exporter:
 
-5. **Start the Kernel Agent (Requires Root):**
 ```bash
-cd ../ebpf-linux-agent/src
+cd ebpf-linux-agent/src
 sudo python exporter.py
 
 ```
 
+**6. Launch the React Dashboard:**
+Open a **third terminal window** to boot the Vite development server:
 
-6. **Launch the Dashboard:**
-Open a new terminal window to start the frontend.
 ```bash
-cd ../react-analytics-ui
+cd react-analytics-ui
 npm install
 npm run dev
 
 ```
 
+*(Access the live dashboard at [http://localhost:3000](http://localhost:3000))*
 
+---
 
-### Troubleshooting
+## 🔧 Custom Tweaks & Fixes in this Build
 
-* **eBPF Compilation Errors:** Ensure your Arch Linux kernel headers perfectly match your active kernel (`uname -r`).
-* **LocalStack Connection Issues:** Use `127.0.0.1` instead of `localhost` in your API queries to prevent IPv6 resolution failures.
-* **Docker Start Limit Hit:** If Docker fails to start on Arch Linux after a system update, reboot the machine to apply the new networking modules.
+This repository includes several specific engineering solutions over standard setups to ensure absolute stability:
 
-## What I Learned
+### 1. Compiler-Safe eBPF Memory Structs
 
-Building this project pushed me deep into the internals of Linux and container networking. The biggest technical challenge was handling BCC's `BPF_HASH` macros in C; passing inline arrays caused LLVM/Clang compiler errors. I solved this by explicitly defining a C `struct` to safely extract and store the `TASK_COMM_LEN` strings from the kernel's `sys_enter_execve` tracepoint. I also learned how to seamlessly proxy Vite API requests to prevent CORS errors when connecting the frontend to the Prometheus engine.
+Standard BCC inline arrays (like `char[TASK_COMM_LEN]`) cause LLVM/Clang compiler crashes on newer Arch Linux kernels.
 
-## Personal Interest
+* **The Fix:** The C probe uses a dedicated `struct key_t` to safely extract and store kernel tracepoint strings from `sys_enter_execve` before pushing them to user-space.
 
-I am highly passionate about the intersection of low-level system architecture and high-level software design. There is something deeply satisfying about watching a command executed in an Arch Linux terminal instantly trigger a data flow that travels through the kernel, into a Dockerized database, and dynamically updates a React UI chart milliseconds later.
+### 2. Zero-CORS Vite Proxying
 
-## Future Directions
+The frontend needs to query the Prometheus database every 2 seconds without triggering strict browser security blocks.
 
-* Migrate the LocalStack S3 bucket from a static provision to actively archiving hourly telemetry JSON dumps via an AWS Lambda emulation.
-* Introduce Grafana alongside the custom React UI for advanced historical data querying.
+* **The Fix:** The `vite.config.js` is injected with a seamless API proxy that silently routes frontend `/api/v1/query` requests directly to the Dockerized backend on port 9090.
 
-## License & Contributing
+### 3. Complete AWS Emulation
 
-This project is open-source under the MIT License. Contributions, issues, and feature requests are welcome!
+Instead of paying for Amazon S3, this platform strictly targets the LocalStack emulator.
 
-## Contact
+* **The Fix:** OpenTofu provider configurations are hardcoded to bypass metadata checks, skip credential validation, and route directly to `http://127.0.0.1:4566`.
+
+---
+
+## ⏱️ System Tweaks (Troubleshooting)
+
+**Fix Docker IPv6 Resolution Issues:**
+If your LocalStack connection drops or OpenTofu fails to apply, always use `127.0.0.1` instead of `localhost` in your API queries and Terraform endpoints. This prevents local DNS resolution timeouts natively found on Arch Linux IPv6 configurations.
+
+---
+
+## 📊 Dashboard Showcase
+
+*(Replace placeholder with actual image path if uploaded to `react-analytics-ui/src/assets/hero.png`)*
+
+**Featuring:**
+
+* **Real-time Event Tracking:** Total observed executions
+* **Active Kernel Hook:** `sys_enter_execve`
+* **Cloud Storage Archive:** `s3://telemetry-archive`
+* **Visualization:** Dynamic Recharts BarChart of Top 10 Executed Binaries updating every 2000ms.
+
+---
+
+## ✌️ Wrapping Up
+
+Building a custom cloud-native architecture from scratch is a journey. This repository is my personal take on making low-level Linux observability as seamless, visual, and cost-effective as possible.
+
+Whether you are deploying this exactly as it is, or just stealing the eBPF C code and OpenTofu scripts for your own pipeline—go for it. That's the beauty of open-source engineering.
+
+See you in the terminal!
+
+### 📬 Contact
 
 **Braveen R**
 
-* [Linklee Hub](https://braveenr.linklee.in/)
-
-```
+* **Connect with me:** [Portfolio & Links Hub](https://braveenr.linklee.in/)
