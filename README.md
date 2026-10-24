@@ -1,4 +1,3 @@
-```markdown
 # 🚀 The Zero-Cost Telemetry Platform
 
 [![OS - Arch Linux](https://img.shields.io/badge/OS-Arch_Linux-1793D1?logo=arch-linux&logoColor=white&style=for-the-badge)](https://archlinux.org/)
