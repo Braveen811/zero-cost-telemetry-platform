@@ -53,7 +53,7 @@ This repository is structured as a monorepo containing three distinct layers.
 **1. Clone this repository into your workspace:**
 
 ```bash
-git clone [https://github.com/Braveen811/zero-cost-telemetry-platform.git](https://github.com/Braveen811/zero-cost-telemetry-platform.git)
+git clone [https://github.com/braveen-r/zero-cost-telemetry-platform.git](https://github.com/braveen-r/zero-cost-telemetry-platform.git)
 cd zero-cost-telemetry-platform
 
 ```
